@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     let length: CGFloat = 480
     let cd = CD(image: UIImage(named: "LP.jpg"))
     let needle = UIImageView(image: UIImage(named: "needle.png"))
+    var startPanAngle: CGFloat = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,18 +30,8 @@ class ViewController: UIViewController {
 
         setUpDynamics()
 
-        let playPauseButton = UIButton(type: .system)
-        playPauseButton.backgroundColor = .white
-        playPauseButton.addTarget(self, action: #selector(togglePlay), for: .touchUpInside)
-        view.addSubview(playPauseButton)
-        playPauseButton.translatesAutoresizingMaskIntoConstraints = false
-        playPauseButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        playPauseButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        playPauseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        let constraint = playPauseButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        constraint.constant = -40
-        constraint.isActive = true
-
+        needle.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(pan(_:))))
+        needle.isUserInteractionEnabled = true
         needle.layer.anchorPoint = CGPoint(x: 0.5, y: 75.0 / 600)
         needle.frame = CGRect(
             x: view.frame.size.width - 100 - 60,
@@ -57,23 +48,52 @@ class ViewController: UIViewController {
         animator.addBehavior(dynamicItemBehavior)
     }
 
-    @objc func togglePlay() {
-        playing = !playing
+    @objc func pan(_ pan: UIPanGestureRecognizer) {
+        let transform = needle.transform
+        UIView.setAnimationsEnabled(false)
+        needle.transform = CGAffineTransform.identity
 
-        if playing {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.needle.transform = CGAffineTransform(rotationAngle: 0.3)
-            })
+        let point = pan.location(in: pan.view)
+        var panAngle = atan((50 - point.x) / (point.y - 75))
+        if pan.state == .began {
+            startPanAngle = playing ? panAngle - 0.3 : panAngle
+        }
+        panAngle -= startPanAngle
 
-            dynamicItemBehavior.angularResistance = 0
-            dynamicItemBehavior.addAngularVelocity(-dynamicItemBehavior.angularVelocity(for: cd), for: cd)
-            dynamicItemBehavior.addAngularVelocity(CGFloat.pi, for: cd)
-        } else {
-            UIView.animate(withDuration: 0.3, animations: {
-                self.needle.transform = CGAffineTransform.identity
-            }) { (finished) in
-                self.dynamicItemBehavior.angularResistance = 3
+        UIView.setAnimationsEnabled(true)
+        needle.transform = transform
+
+        if pan.state == .cancelled || pan.state == .ended {
+            if panAngle >= 0.3 {
+                play()
+            } else {
+                pause()
             }
+        } else {
+
+            needle.transform = CGAffineTransform(rotationAngle: panAngle)
+        }
+    }
+
+    func play() {
+        playing = true
+
+        UIView.animate(withDuration: 0.3, animations: {
+            self.needle.transform = CGAffineTransform(rotationAngle: 0.3)
+        })
+
+        dynamicItemBehavior.angularResistance = 0
+        dynamicItemBehavior.addAngularVelocity(-dynamicItemBehavior.angularVelocity(for: cd), for: cd)
+        dynamicItemBehavior.addAngularVelocity(CGFloat.pi, for: cd)
+    }
+
+    func pause() {
+        playing = false
+
+        UIView.animate(withDuration: 0.3, animations: {
+            self.needle.transform = CGAffineTransform.identity
+        }) { (finished) in
+            self.dynamicItemBehavior.angularResistance = 3
         }
     }
 }
