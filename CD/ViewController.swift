@@ -16,6 +16,7 @@ class ViewController: UIViewController {
 
     let length: CGFloat = 480
     let cd = CD(image: UIImage(named: "LP.jpg"))
+    let needle = UIImageView(image: UIImage(named: "needle.png"))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,15 @@ class ViewController: UIViewController {
         let constraint = playPauseButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         constraint.constant = -40
         constraint.isActive = true
+
+        needle.layer.anchorPoint = CGPoint(x: 0.5, y: 75.0 / 600)
+        needle.frame = CGRect(
+            x: view.frame.size.width - 100 - 60,
+            y: 20 + 60,
+            width: 100,
+            height: 600
+        )
+        view.addSubview(needle)
     }
 
     func setUpDynamics() {
@@ -48,14 +58,22 @@ class ViewController: UIViewController {
     }
 
     @objc func togglePlay() {
+        playing = !playing
+
         if playing {
-            dynamicItemBehavior.angularResistance = 3
-        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.needle.transform = CGAffineTransform(rotationAngle: 0.3)
+            })
+
             dynamicItemBehavior.angularResistance = 0
             dynamicItemBehavior.addAngularVelocity(-dynamicItemBehavior.angularVelocity(for: cd), for: cd)
             dynamicItemBehavior.addAngularVelocity(CGFloat.pi, for: cd)
+        } else {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.needle.transform = CGAffineTransform.identity
+            }) { (finished) in
+                self.dynamicItemBehavior.angularResistance = 3
+            }
         }
-
-        playing = !playing
     }
 }

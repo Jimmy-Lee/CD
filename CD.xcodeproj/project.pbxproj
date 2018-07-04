@@ -14,6 +14,7 @@
 		4B66D5B520EB9EAB00CB4FD5 /* CDUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B66D5B420EB9EAB00CB4FD5 /* CDUITests.swift */; };
 		4B66D5C320EBA07E00CB4FD5 /* LP.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 4B66D5C220EBA07D00CB4FD5 /* LP.jpg */; };
 		4BDC05EC20EBA2A30033E494 /* CD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BDC05EB20EBA2A30033E494 /* CD.swift */; };
+		4BDC05F020ECF6F80033E494 /* needle.png in Resources */ = {isa = PBXBuildFile; fileRef = 4BDC05EF20ECF6F80033E494 /* needle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		4B66D5B620EB9EAB00CB4FD5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4B66D5C220EBA07D00CB4FD5 /* LP.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = LP.jpg; sourceTree = "<group>"; };
 		4BDC05EB20EBA2A30033E494 /* CD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CD.swift; sourceTree = "<group>"; };
+		4BDC05EF20ECF6F80033E494 /* needle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = needle.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		4B66D59320EB9EAA00CB4FD5 /* CD */ = {
 			isa = PBXGroup;
 			children = (
+				4BDC05EF20ECF6F80033E494 /* needle.png */,
 				4B66D5C220EBA07D00CB4FD5 /* LP.jpg */,
 				4B66D59420EB9EAA00CB4FD5 /* AppDelegate.swift */,
 				4B66D59620EB9EAA00CB4FD5 /* ViewController.swift */,
@@ -229,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BDC05F020ECF6F80033E494 /* needle.png in Resources */,
 				4B66D5C320EBA07E00CB4FD5 /* LP.jpg in Resources */,
 				4B66D59C20EB9EAB00CB4FD5 /* Assets.xcassets in Resources */,
 			);
